@@ -8,22 +8,22 @@
 import UIKit
 
 class MaybellineCollectionViewCell: UICollectionViewCell {
-	
-	@IBOutlet var imageView: UIImageView! {
+
+	@IBOutlet private var imageView: UIImageView! {
 		didSet {
 			imageView.layer.cornerRadius = 20
 		}
 	}
-	
-	@IBOutlet var nameLabel: UILabel!
-	@IBOutlet var priceLabel: UILabel!
-	@IBOutlet var descriptionLabel: UILabel!
-	
+
+	@IBOutlet private var nameLabel: UILabel!
+	@IBOutlet private var priceLabel: UILabel!
+	@IBOutlet private var descriptionLabel: UILabel!
+
 	func configure(with maybelline: Maybelline) {
 		nameLabel.text = maybelline.name
 		priceLabel.text = "\(maybelline.price ?? "Out of sale")"
 		descriptionLabel.text = maybelline.description
-		
+
 		NetworkMaybellineManager.shared.fetchImage(from: maybelline.imageLink) { result in
 			switch result {
 			case .success(let imageData):
@@ -33,6 +33,4 @@ class MaybellineCollectionViewCell: UICollectionViewCell {
 			}
 		}
 	}
-	
-	
 }

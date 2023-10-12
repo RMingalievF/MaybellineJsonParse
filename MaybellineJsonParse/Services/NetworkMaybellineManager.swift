@@ -15,19 +15,19 @@ enum NetworkError: Error {
 }
 
 class NetworkMaybellineManager {
-	
+
 	static let shared = NetworkMaybellineManager()
-	
+
 	let urlAPI = "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
-	
+
 	private init() {}
-	
-	func fetchMaybellineInfo(from url: String, completion: @escaping (Result<[Maybelline], NetworkError>) -> ()) {
+
+	func fetchMaybellineInfo(from url: String, completion: @escaping (Result<[Maybelline], NetworkError>) -> Void) {
 		guard let url = URL(string: urlAPI) else {
 			completion(.failure(.invalidURL))
 			return
 		}
-		
+
 		URLSession.shared.dataTask(with: url) { data, response, error in
 			guard let data = data else {
 				print(error?.localizedDescription ?? "No error description")
@@ -36,9 +36,9 @@ class NetworkMaybellineManager {
 			}
 			guard let httpResponse = response as? HTTPURLResponse,
 				  (200..<300).contains(httpResponse.statusCode) else {
-					  completion(.failure(.invalidStatusCode))
-					  return
-				  }
+				completion(.failure(.invalidStatusCode))
+				return
+			}
 			do {
 				let maybs = try JSONDecoder().decode([Maybelline].self, from: data)
 				DispatchQueue.main.async {
@@ -48,9 +48,10 @@ class NetworkMaybellineManager {
 			} catch {
 				completion(.failure(.decodingError))
 			}
-		}.resume()
+		}
+		.resume()
 	}
-	
+
 	func fetchImage(from url: String, completion: @escaping(Result<Data, NetworkError>) -> Void) {
 		guard let url = URL(string: url) else {
 			completion(.failure(.invalidURL))
@@ -66,5 +67,4 @@ class NetworkMaybellineManager {
 			}
 		}
 	}
-	
 }

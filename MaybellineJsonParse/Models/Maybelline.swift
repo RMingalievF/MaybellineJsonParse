@@ -13,7 +13,7 @@ struct Maybelline: Codable {
 	let imageLink: String
 	let description: String
 	let price: String?
-	
+
 	enum CodingKeys: String, CodingKey {
 		case id = "id"
 		case name = "name"
@@ -21,5 +21,4 @@ struct Maybelline: Codable {
 		case description = "description"
 		case price = "price"
 	}
-	
 }
